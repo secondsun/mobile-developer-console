@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {
-  DropdownKebab, MenuItem, Button, Row, Col,
-} from 'patternfly-react';
+import { DropdownKebab, MenuItem, Button, Row, Col } from 'patternfly-react';
 import BuildStatus from '../common/BuildStatus';
 import MobileListViewItem from '../common/MobileListViewItem';
 import BuildConfigDetails from './BuildConfigDetails';
@@ -27,30 +25,25 @@ const buildConfig = buildConfiguration => ({
   jobName: buildConfiguration.metadata.name,
   // TODO: consider other sources other than git as well
   branch: buildConfiguration.spec.source.git.ref || 'master',
-  repoUrl: buildConfiguration.spec.source.git.uri,
+  repoUrl: buildConfiguration.spec.source.git.uri
 });
 
 const buildNumber = build => build && build.metadata.annotations['openshift.io/build.number'];
 
 const lastBuild = builds => builds.reduce((acc, curr) => (buildNumber(curr) > buildNumber(acc) ? curr : acc), null);
 
-const buildHistory = (builds) => {
+const buildHistory = builds => {
   const lastBuildNumber = buildNumber(lastBuild(builds));
-  return builds
-    .filter(build => buildNumber(build) !== lastBuildNumber)
-    .sort((a, b) => buildNumber(b) - buildNumber(a));
+  return builds.filter(build => buildNumber(build) !== lastBuildNumber).sort((a, b) => buildNumber(b) - buildNumber(a));
 };
 
 const heading = (name, lastBuild) => (
   <div className="pull-left text-left">
-    {
-      lastBuild && (
-        <span>
-          <BuildStatus build={lastBuild} />
-          {' '}
-        </span>
-      )
-    }
+    {lastBuild && (
+      <span>
+        <BuildStatus build={lastBuild} />{' '}
+      </span>
+    )}
     <a className="name">
       <span>{name}</span>
     </a>
@@ -63,13 +56,13 @@ class MobileClientBuildListItem extends Component {
 
     this.state = {
       mobileClientBuildConfigs: [],
-      isHidden: true,
+      isHidden: true
     };
   }
 
   toggleHidden() {
     this.setState({
-      isHidden: !this.state.isHidden,
+      isHidden: !this.state.isHidden
     });
   }
 
@@ -77,17 +70,13 @@ class MobileClientBuildListItem extends Component {
     if (this.state.isHidden) {
       return (
         <Button bsStyle="link" onClick={this.toggleHidden.bind(this)}>
-          <span className="fa fa-angle-right fa-fw" aria-hidden="true" />
-          {' '}
-Show Build History
+          <span className="fa fa-angle-right fa-fw" aria-hidden="true" /> Show Build History
         </Button>
       );
     }
     return (
       <Button bsStyle="link" onClick={this.toggleHidden.bind(this)}>
-        <span className="fa fa-angle-down fa-fw" aria-hidden="true" />
-        {' '}
-Hide Build History
+        <span className="fa fa-angle-down fa-fw" aria-hidden="true" /> Hide Build History
       </Button>
     );
   }
@@ -110,59 +99,55 @@ Hide Build History
       >
         <Row>
           <Col md={12}>
-            <ComponentSectionLabel>
-                Build Config
-            </ComponentSectionLabel>
+            <ComponentSectionLabel>Build Config</ComponentSectionLabel>
             <BuildConfigDetails buildConfig={buildConfigDetails} />
           </Col>
         </Row>
         <Row>
           <Col md={12}>
-            <ComponentSectionLabel>
-                Builds
-            </ComponentSectionLabel>
-            {
-              builds.length === 0
-                ? <NoBuild buildConfig={buildConfigDetails} />
-                : (
-                  <React.Fragment>
-                    <BuildInformation build={lastClientBuild} />
-                    {
-                    clientBuildHistory.length > 0
-                      ? (
-                        <Row>
-                          <Col md={12}>
-                            <div className="mobile-chevron">
-                              <a
-                                href=""
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  this.setState({ buildHistoryOpen: !this.state.buildHistoryOpen });
-                                }}
-                              >
-                                <span className={this.state.buildHistoryOpen ? 'fa fa-angle-down' : 'fa fa-angle-right'} />&nbsp;
-                                { this.state.buildHistoryOpen ? 'Hide' : 'Show' }
-                                {' '}
-build history
-                              </a>
-                            </div>
-                            { this.state.buildHistoryOpen
-                              ? <MobileClientBuildHistoryList className="collapse in" id="demo" mobileClientBuilds={clientBuildHistory} />
-                              : <React.Fragment />
-                          }
-                          </Col>
-                        </Row>
-                      )
-                      : <React.Fragment />
-                  }
-                  </React.Fragment>
-                )
-            }
+            <ComponentSectionLabel>Builds</ComponentSectionLabel>
+            {builds.length === 0 ? (
+              <NoBuild buildConfig={buildConfigDetails} />
+            ) : (
+              <React.Fragment>
+                <BuildInformation build={lastClientBuild} />
+                {clientBuildHistory.length > 0 ? (
+                  <Row>
+                    <Col md={12}>
+                      <div className="mobile-chevron">
+                        <a
+                          href=""
+                          onClick={e => {
+                            e.preventDefault();
+                            this.setState({ buildHistoryOpen: !this.state.buildHistoryOpen });
+                          }}
+                        >
+                          <span className={this.state.buildHistoryOpen ? 'fa fa-angle-down' : 'fa fa-angle-right'} />
+                          &nbsp;
+                          {this.state.buildHistoryOpen ? 'Hide' : 'Show'} build history
+                        </a>
+                      </div>
+                      {this.state.buildHistoryOpen ? (
+                        <MobileClientBuildHistoryList
+                          className="collapse in"
+                          id="demo"
+                          mobileClientBuilds={clientBuildHistory}
+                        />
+                      ) : (
+                        <React.Fragment />
+                      )}
+                    </Col>
+                  </Row>
+                ) : (
+                  <React.Fragment />
+                )}
+              </React.Fragment>
+            )}
           </Col>
         </Row>
       </MobileListViewItem>
     );
-  }
+  };
 }
 
 export default MobileClientBuildListItem;

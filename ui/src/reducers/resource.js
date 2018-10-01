@@ -5,7 +5,7 @@ const defaultState = {
   isCreating: false,
   createError: false,
   isDeleting: false,
-  deleteError: false,
+  deleteError: false
 };
 
 const resourceReducer = actions => (state = defaultState, action) => {
@@ -15,45 +15,45 @@ const resourceReducer = actions => (state = defaultState, action) => {
       return {
         ...state,
         isFetching: true,
-        fetchError: false,
+        fetchError: false
       };
     case actions.listSuccess:
       return {
         ...state,
         isFetching: false,
         items: action.result,
-        fetchError: false,
+        fetchError: false
       };
     case actions.listFailure:
       return {
         ...state,
         isFetching: false,
-        fetchError: action.error,
+        fetchError: action.error
       };
     case actions.createRequest:
       return {
         ...state,
         isCreating: true,
-        createError: false,
+        createError: false
       };
     case actions.createSuccess:
       return {
         ...state,
         isCreating: false,
         createError: false,
-        items: [...state.items, action.result],
+        items: [...state.items, action.result]
       };
     case actions.createFailure:
       return {
         ...state,
         isCreating: false,
-        createError: action.error,
+        createError: action.error
       };
     case actions.deleteRequest:
       return {
         ...state,
         isDeleting: true,
-        deleteError: false,
+        deleteError: false
       };
     case actions.deleteSuccess:
       indexOfRemovedObject = state.items.findIndex(item => item.metadata.name === action.result);
@@ -61,16 +61,13 @@ const resourceReducer = actions => (state = defaultState, action) => {
         ...state,
         isDeleting: false,
         deleteError: false,
-        items: [
-          ...state.items.slice(0, indexOfRemovedObject),
-          ...state.items.slice(indexOfRemovedObject + 1),
-        ],
+        items: [...state.items.slice(0, indexOfRemovedObject), ...state.items.slice(indexOfRemovedObject + 1)]
       };
     case actions.deleteFailure:
       return {
         ...state,
         isDeleting: false,
-        deleteError: action.error,
+        deleteError: action.error
       };
     default:
       return state;

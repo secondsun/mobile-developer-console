@@ -7,20 +7,20 @@ import BuildStatus from '../common/BuildStatus';
 
 import './MobileClientBuildHistoryList.css';
 
-const MobileClientBuildHistoryList = (props) => {
+const MobileClientBuildHistoryList = props => {
   const mobileClientBuilds = Object.values(props.mobileClientBuilds || {});
   return (
     <React.Fragment>
-      {mobileClientBuilds.map((mobileClientBuild) => {
+      {mobileClientBuilds.map(mobileClientBuild => {
         const {
           status: { phase, startTimestamp, completionTimestamp },
           metadata: {
             annotations: {
               'openshift.io/build.number': buildNumber,
-              'openshift.io/jenkins-console-log-url': jenkinsConsoleLogUrl,
+              'openshift.io/jenkins-console-log-url': jenkinsConsoleLogUrl
             },
-            uid,
-          },
+            uid
+          }
         } = mobileClientBuild;
         const durationString = moment.preciseDiff(startTimestamp, completionTimestamp);
 
@@ -29,11 +29,9 @@ const MobileClientBuildHistoryList = (props) => {
             <Col xs={9} sm={10} md={10} className="status-panel">
               <div className="build-summary">
                 <div>
-                  <BuildStatus build={mobileClientBuild} />&nbsp;
-                  <a>
-                    Build #
-                    {buildNumber}
-                  </a>
+                  <BuildStatus build={mobileClientBuild} />
+                  &nbsp;
+                  <a>Build #{buildNumber}</a>
                 </div>
               </div>
               <Col md={12} className="state">
@@ -41,19 +39,14 @@ const MobileClientBuildHistoryList = (props) => {
                   <Col md={6}>
                     <div className="info status">{phase}</div>
                     <div className="info logs">
-                      <a
-                        href={jenkinsConsoleLogUrl}
-                        className="left-margin-link"
-                      >
+                      <a href={jenkinsConsoleLogUrl} className="left-margin-link">
                         View log
                       </a>
                     </div>
                   </Col>
                   <Col md={6}>
                     <div className="info creation build-timestamp">
-                      <Moment fromNow>
-                        {startTimestamp}
-                      </Moment>
+                      <Moment fromNow>{startTimestamp}</Moment>
                     </div>
                   </Col>
                 </Col>
@@ -64,9 +57,7 @@ const MobileClientBuildHistoryList = (props) => {
               </Col>
             </Col>
             <Col xs={3} sm={2} md={2} className="download">
-              <Button bsSize="xsmall">
-                                Download
-              </Button>
+              <Button bsSize="xsmall">Download</Button>
             </Col>
           </Col>
         );

@@ -32,13 +32,16 @@ class Overview extends Component {
 function mapStateToProps(state) {
   return {
     apps: state.apps,
-    services: state.services,
+    services: state.services
   };
 }
 
 const mapDispatchToProps = {
   fetchApps,
-  fetchServices,
+  fetchServices
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Overview);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Overview);

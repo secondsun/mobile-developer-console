@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Nav, NavItem, TabContent, TabPane, Tabs,
-} from 'patternfly-react';
+import { Nav, NavItem, TabContent, TabPane, Tabs } from 'patternfly-react';
 import { connect } from 'react-redux';
 import ConfigurationView from '../components/configuration/ConfigurationView';
 import MobileClientBuildsList from '../components/build/MobileClientBuildsList';
@@ -9,13 +7,12 @@ import MobileServiceView from '../components/mobileservices/MobileServiceView';
 import { fetchBuildConfigs } from '../actions/buildConfigs';
 import { fetchBuilds } from '../actions/builds';
 
-
 class Client extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      buildConfigs: [],
+      buildConfigs: []
     };
   }
 
@@ -25,18 +22,15 @@ class Client extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      this.props.buildConfigs !== prevProps.buildConfigs
-      || this.props.builds !== prevProps.builds
-    ) {
-      const configs = this.props.buildConfigs.items.filter(config => config.metadata.labels['mobile-client-id'] === this.props.match.params.id);
+    if (this.props.buildConfigs !== prevProps.buildConfigs || this.props.builds !== prevProps.builds) {
+      const configs = this.props.buildConfigs.items.filter(
+        config => config.metadata.labels['mobile-client-id'] === this.props.match.params.id
+      );
 
       configs.forEach(config => delete config.builds);
 
-      this.props.builds.items.forEach((build) => {
-        const matchingConfig = configs.find(
-          config => config.metadata.name === build.metadata.labels.buildconfig,
-        );
+      this.props.builds.items.forEach(build => {
+        const matchingConfig = configs.find(config => config.metadata.name === build.metadata.labels.buildconfig);
         if (matchingConfig) {
           matchingConfig.builds = matchingConfig.builds || [];
           matchingConfig.builds.push(build);
@@ -80,13 +74,16 @@ class Client extends Component {
 function mapStateToProps(state) {
   return {
     buildConfigs: state.buildConfigs,
-    builds: state.builds,
+    builds: state.builds
   };
 }
 
 const mapDispatchToProps = {
   fetchBuildConfigs,
-  fetchBuilds,
+  fetchBuilds
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Client);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Client);

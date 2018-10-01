@@ -2,14 +2,10 @@ import React from 'react';
 import { ListView } from 'patternfly-react';
 import MobileClientListViewItem from './MobileClientListViewItem';
 
-const MobileClientOverviewList = ({
-  mobileClients,
-  mobileServiceInstances,
-  mobileClientBuilds,
-}) => (
+const MobileClientOverviewList = ({ mobileClients, mobileServiceInstances, mobileClientBuilds }) => (
   <div>
     <ListView>
-      {mobileClients.map((mobileClient) => {
+      {mobileClients.map(mobileClient => {
         const { uid } = mobileClient.metadata;
         return (
           <MobileClientListViewItem
